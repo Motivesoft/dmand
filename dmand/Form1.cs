@@ -20,7 +20,15 @@ namespace dmand
             LaunchProfile profile;
             if ( args.Length == 0 )
             {
-                profile = LaunchProfile.Default;
+                try
+                {
+                    profile = Utilities.LoadFrom<LaunchProfile>( "launch" );
+                }
+                catch ( Exception )
+                {
+                    // TODO log that we failed to read the profile and so we're using the default
+                    profile = LaunchProfile.Default;
+                }
             }
             else
             {
@@ -43,6 +51,8 @@ namespace dmand
 
             ThemeManager.SetTheme( profile.Theme );
             ThemeManager.Apply( this );
+
+            Utilities.SaveTo<LaunchProfile>( profile, "launch" );
         }
 
         private void Form1_Load( object sender, EventArgs e )

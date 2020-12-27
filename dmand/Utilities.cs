@@ -91,6 +91,10 @@ namespace dmand
 
         private static string PathForConfiguration( bool perUser, string filename )
         {
+#if DEBUG
+            // For debug purposes, run from a local set of config files
+            var parentFolder = Path.GetFullPath( "." );
+#else
             string folderPath;
             if ( perUser )
             {
@@ -100,7 +104,9 @@ namespace dmand
             {
                 folderPath = Environment.GetFolderPath( Environment.SpecialFolder.ApplicationData );
             }
-            return Path.Combine( folderPath, Application.CompanyName, Application.ProductName, filename + ".json" ); 
+            var parentFolder = Path.Combine( folderPath, Application.CompanyName, Application.ProductName );
+#endif
+            return Path.Combine( parentFolder, filename + ".json" ); 
         }
     }
 }

@@ -1,0 +1,31 @@
+[
+  {
+    "Name": "Dark",
+    "Colors": {
+      "Panel.BackColor": "#1B1E2B",
+      "TextBoxBase.ForeColor": "#89DDF2",
+      "TextBoxBase.BackColor": "#292D3E",
+      "ListControl.ForeColor": "#89DDF2",
+      "ListControl.BackColor": "#292D3E"
+    }
+  },
+  {
+    "Name": "VSDark",
+    "Colors": {
+      "Panel.BackColor": "#1E1E1E",
+      "TextBoxBase.ForeColor": "#F1F1F1",
+      "TextBoxBase.BackColor": "#333333",
+      "ListControl.ForeColor": "#F1F1F1",
+      "ListControl.BackColor": "#333333"
+    }
+  },
+  {
+    "Name": "Light",
+    "Colors": {
+      "TextBoxBase.ForeColor": "#000000",
+      "TextBoxBase.BackColor": "#ffffff",
+      "ListControl.ForeColor": "#000000",
+      "ListControl.BackColor": "#ffffff"
+    }
+  }
+]
