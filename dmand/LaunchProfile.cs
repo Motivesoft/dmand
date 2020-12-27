@@ -16,8 +16,15 @@ namespace dmand
     {
         public static readonly LaunchProfile Default = new LaunchProfile
         {
-            Panels = new PanelProfile[] { PanelProfile.Default }
+            Panels = new PanelProfile[] { PanelProfile.Default },
+            Theme = "Dark"
         };
+
+        public string Theme
+        {
+            get;
+            set;
+        }
 
         public PanelProfile[] Panels
         {

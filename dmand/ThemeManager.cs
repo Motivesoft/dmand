@@ -11,8 +11,36 @@ namespace dmand
 {
     public class ThemeManager
     {
-        public void Apply( Theme theme, Control parent )
+        public static Theme CurrentTheme;
+
+        public static bool SetTheme( string themeName )
         {
+            if ( !String.IsNullOrEmpty( themeName ) )
+            {
+                var themes = Utilities.LoadFrom<List<Theme>>( "themes" );
+                foreach ( var theme in themes )
+                {
+                    if ( theme.Name.Equals( themeName ) )
+                    {
+                        CurrentTheme = theme;
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public static void Apply( Control parent, Theme theme = null )
+        {
+            if ( theme == null )
+            {
+                if ( CurrentTheme == null )
+                {
+                    return;
+                }
+                theme = CurrentTheme;
+            }
+
             var list = new Queue<Control>();
             list.Enqueue( parent );
 
@@ -48,7 +76,6 @@ namespace dmand
                 foreach ( var type in typeStack )
                 {
                     var key = $"{type.Name}.{property.Name}";
-                    Console.WriteLine( key );
                     if ( theme.Colors.ContainsKey( key ) )
                     {
                         // Set the property on the most specific type and then

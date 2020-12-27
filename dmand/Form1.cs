@@ -13,20 +13,12 @@ namespace dmand
 {
     public partial class Form1 : Form
     {
-        private readonly string[] Args;
-
         public Form1( string[] args )
         {
             InitializeComponent();
 
-            // Don't do anything with these until the form is loaded
-            Args = args;
-        }
-
-        private void Form1_Load( object sender, EventArgs e )
-        {
             LaunchProfile profile;
-            if ( Args.Length == 0 )
+            if ( args.Length == 0 )
             {
                 profile = LaunchProfile.Default;
             }
@@ -35,17 +27,26 @@ namespace dmand
                 // TODO Implement this propery
                 try
                 {
-                    profile = LaunchProfile.LoadFrom( Args[ 0 ] );
+                    profile = LaunchProfile.LoadFrom( args[ 0 ] );
                 }
                 catch ( Exception ex )
                 {
-                    MessageBox.Show( $"Failed to load from profile: {Args[0]}\n\nReason:\n{ex.Message}", "Profile error", MessageBoxButtons.OK, MessageBoxIcon.Error );
+                    MessageBox.Show( $"Failed to load from profile: {args[ 0 ]}\n\nReason:\n{ex.Message}", "Profile error", MessageBoxButtons.OK, MessageBoxIcon.Error );
 
                     // Exit here as this was attempted due to a user request and they probably just mis-typed the path
                     Application.Exit();
+
+                    // We won't get here, but it helps the compiler know this code path ends here
+                    return;
                 }
             }
 
+            ThemeManager.SetTheme( profile.Theme );
+            ThemeManager.Apply( this );
+        }
+
+        private void Form1_Load( object sender, EventArgs e )
+        {
             //if( )
             toolStripCommandPalette.Items.Add( "AAA" );
             toolStripCommandPalette.Items.Add( "BBB" );

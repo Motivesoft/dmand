@@ -26,11 +26,7 @@ namespace dmand
                 listBox1.Items.Add( $"Item {loop}" );
             }
 
-            var themes = Utilities.LoadFrom<List<Theme>>( "themes" );
-            if ( themes.Count > 0 )
-            {
-                new ThemeManager().Apply( themes[ 0 ], this );
-            }
+            ThemeManager.Apply( this );
         }
 
         private void PopupList_KeyDown( object sender, KeyEventArgs e )
