@@ -15,6 +15,12 @@ namespace dmand
         private readonly int VisibleItemCount;
         private readonly PopupListModel Model;
 
+        public string Outcome
+        {
+            get;
+            private set;
+        }
+
         public PopupList( PopupListModel model, int visibleItemCount = 20 )
         {
             Model = model;
@@ -27,20 +33,15 @@ namespace dmand
             ThemeManager.Apply( this );
         }
 
-        private void PopupList_KeyDown( object sender, KeyEventArgs e )
-        {
-
-        }
-
         private void textBox1_KeyDown( object sender, KeyEventArgs e )
         {
             if ( e.KeyCode == Keys.Escape )
             {
-                Dispose();
+                CloseWithResult( DialogResult.Cancel );
             }
             else if ( e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return )
             {
-                Dispose();
+                CloseWithResult( DialogResult.OK );
             }
             else if ( e.KeyCode == Keys.Down )
             {
@@ -63,10 +64,6 @@ namespace dmand
                 {
                     listBox1.SelectedIndex--;
                 }
-            }
-            else
-            {
-                // TODO filter listbox based on textbox
             }
         }
 
@@ -96,13 +93,27 @@ namespace dmand
         private void UpdateList()
         {
             listBox1.BeginUpdate();
+            var selection = listBox1.SelectedItem;
             listBox1.Items.Clear();
             foreach ( var item in Model.GetFilteredList( textBox1.Text ) )
             {
-                Console.WriteLine( "CCC" );
                 listBox1.Items.Add( item.Value );
             }
+            listBox1.SelectedItem = selection;
             listBox1.EndUpdate();
+        }
+
+        private void listBox1_Click( object sender, EventArgs e )
+        {
+            textBox1.Text = listBox1.SelectedItem.ToString();
+            CloseWithResult( DialogResult.OK );
+        }
+
+        private void CloseWithResult( DialogResult result )
+        {
+            DialogResult = result;
+            Outcome = result == DialogResult.OK ? textBox1.Text : null;
+            Dispose();
         }
     }
 }

@@ -99,7 +99,10 @@ namespace dmand
 
                 var popup = new PopupList( model );
                 popup.Show(this);
-                var x = popup.Text;
+
+                if ( popup.DialogResult == DialogResult.OK )
+                {
+                }
             }
 
         }
