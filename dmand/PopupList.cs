@@ -47,8 +47,29 @@ namespace dmand
             }
             else if ( e.KeyCode == Keys.Down )
             {
-                listBox1.SelectedIndex++;
-                listBox1.Focus();
+                if ( listBox1.SelectedIndex == listBox1.Items.Count - 1 )
+                {
+                    listBox1.SelectedIndex = 0;
+                }
+                else
+                {
+                    listBox1.SelectedIndex++;
+                }
+            }
+            else if ( e.KeyCode == Keys.Up )
+            {
+                if ( listBox1.SelectedIndex == 0 )
+                {
+                    listBox1.SelectedIndex = listBox1.Items.Count - 1;
+                }
+                else
+                {
+                    listBox1.SelectedIndex--;
+                }
+            }
+            else
+            {
+                // TODO filter listbox based on textbox
             }
         }
 
