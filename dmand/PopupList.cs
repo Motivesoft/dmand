@@ -31,6 +31,9 @@ namespace dmand
             UpdateList();
 
             ThemeManager.Apply( this );
+
+            // Set a default in case any creative exit routes are discovered
+            DialogResult = DialogResult.Cancel;
         }
 
         private void textBox1_KeyDown( object sender, KeyEventArgs e )
@@ -114,6 +117,11 @@ namespace dmand
             DialogResult = result;
             Outcome = result == DialogResult.OK ? textBox1.Text : null;
             Dispose();
+        }
+
+        private void PopupList_Deactivate( object sender, EventArgs e )
+        {
+            CloseWithResult( DialogResult.Cancel );
         }
     }
 }

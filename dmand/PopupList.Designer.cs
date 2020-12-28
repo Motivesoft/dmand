@@ -70,6 +70,7 @@ namespace dmand
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+            this.Deactivate += new System.EventHandler(this.PopupList_Deactivate);
             this.Shown += new System.EventHandler(this.PopupList_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
