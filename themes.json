@@ -1,11 +1,11 @@
 [
   {
-    "Name": "Dark",
+    "Name": "Palenight-ish",
     "Colors": {
       "Panel.BackColor": "#1B1E2B",
-      "TextBoxBase.ForeColor": "#89DDF2",
+      "TextBoxBase.ForeColor": "#757CA1",
       "TextBoxBase.BackColor": "#292D3E",
-      "ListControl.ForeColor": "#89DDF2",
+      "ListControl.ForeColor": "#757CA1",
       "ListControl.BackColor": "#292D3E"
     }
   },

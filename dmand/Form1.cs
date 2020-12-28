@@ -57,11 +57,6 @@ namespace dmand
 
         private void Form1_Load( object sender, EventArgs e )
         {
-            //if( )
-            toolStripCommandPalette.Items.Add( "AAA" );
-            toolStripCommandPalette.Items.Add( "BBB" );
-            toolStripCommandPalette.Items.Add( "CCC" );
-            toolStripCommandPalette.Items.Add( "DDD" );
         }
 
         private void exitToolStripMenuItem_Click( object sender, EventArgs e )
@@ -71,48 +66,23 @@ namespace dmand
 
         private void toolStripCommandPalette_Click( object sender, EventArgs e )
         {
-            ForceDropDownState( true );
         }
 
         private void toolStripCommandPalette_Leave( object sender, EventArgs e )
         {
-            ForceDropDownState( false );
-            //toolStripCommandPalette.Text = "";
         }
 
         private void toolStripCommandPalette_Enter( object sender, EventArgs e )
         {
-            ForceDropDownState( true );
         }
 
         private void toolStripCommandPalette_KeyDown( object sender, KeyEventArgs e )
         {
             if ( e.KeyCode == Keys.Enter )
             {
-                // TODO Only really want to do this if the command equated to something valid?
-                var entry = toolStripCommandPalette.Text;
-                if ( entry.Length > 0 )
-                {
-                    // Make sure to have no duplicates and the MRU at the top
-                    Dispatcher.CurrentDispatcher.BeginInvoke( (MethodInvoker) delegate
-                    {
-                        toolStripCommandPalette.Items.Remove( entry );
-                        toolStripCommandPalette.Items.Insert( 0, entry );
-                    } );
-                }
             }
             //else
                 //ForceDropDownState( true );
-        }
-
-        
-
-        private void ForceDropDownState( bool state )
-        {
-            Dispatcher.CurrentDispatcher.BeginInvoke( (MethodInvoker) delegate
-            {
-                toolStripCommandPalette.DroppedDown = state;
-            } );
         }
 
         private void Form1_KeyDown( object sender, KeyEventArgs e )
