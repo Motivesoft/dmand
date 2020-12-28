@@ -28,9 +28,29 @@ namespace dmand
 
             InitializeComponent();
 
-            UpdateList();
-
             ThemeManager.Apply( this );
+
+            listBox1.DrawMode = DrawMode.OwnerDrawFixed;
+            listBox1.DrawItem += ( object sender, DrawItemEventArgs e ) => {
+                e.DrawBackground();
+                e.DrawFocusRectangle();
+
+                var value = Model.Items.ElementAt<PopupListItem>( e.Index ).Value;
+                var hint = Model.Items.ElementAt<PopupListItem>( e.Index ).Hint;
+
+                var sizeValue = e.Graphics.MeasureString( value, e.Font );
+                var sizeHint = string.IsNullOrEmpty( hint ) ? new SizeF( 0, 0 ) : e.Graphics.MeasureString( hint, e.Font );
+
+                e.Graphics.DrawString( Model.Items.ElementAt<PopupListItem>( e.Index ).Value, e.Font, new SolidBrush( Color.Red ), e.Bounds );
+
+                if ( e.Bounds.Width > sizeValue.Width + sizeHint.Width )
+                {
+                    var hintBounds = new Rectangle( (int) ( e.Bounds.X + e.Bounds.Width - sizeHint.Width ), e.Bounds.Y, (int) sizeHint.Width, e.Bounds.Height );
+                    e.Graphics.DrawString( Model.Items.ElementAt<PopupListItem>( e.Index ).Hint, e.Font, new SolidBrush( Color.Green ), e.Bounds );
+                }
+            };
+
+            UpdateList();
 
             // Set a default in case any creative exit routes are discovered
             DialogResult = DialogResult.Cancel;
