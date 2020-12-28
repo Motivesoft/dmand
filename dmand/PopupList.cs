@@ -25,6 +25,7 @@ namespace dmand
             {
                 listBox1.Items.Add( $"Item {loop}" );
             }
+            listBox1.SelectedIndex = 0;
 
             ThemeManager.Apply( this );
         }
@@ -40,9 +41,14 @@ namespace dmand
             {
                 Dispose();
             }
-            if ( e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return )
+            else if ( e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return )
             {
                 Dispose();
+            }
+            else if ( e.KeyCode == Keys.Down )
+            {
+                listBox1.SelectedIndex++;
+                listBox1.Focus();
             }
         }
 
