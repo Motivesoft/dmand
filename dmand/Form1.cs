@@ -90,7 +90,7 @@ namespace dmand
             if ( e.KeyCode == Keys.P && e.Control )
             {
                 var popup = new PopupList();
-                var dialogResult = popup.ShowDialog();
+                var dialogResult = popup.ShowDialog( this );
                 var x = popup.Text;
             }
         }

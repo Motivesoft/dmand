@@ -83,6 +83,12 @@ namespace dmand
                 var dh = th + lh + 8;
                 Height = dh;
             }
+
+            Width = Math.Min( 400, ( Owner.Width * 2 ) / 3 );
+
+            var ownerRectangle = Owner.RectangleToScreen( Owner.ClientRectangle );
+
+            Location = new Point( Owner.Location.X + ( ( Owner.Width - Width ) / 2 ), ownerRectangle.Top + 10 );
         }
     }
 }
