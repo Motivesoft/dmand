@@ -13,19 +13,16 @@ namespace dmand
     public partial class PopupList : Form
     {
         private readonly int VisibleItemCount;
+        private readonly PopupListModel Model;
 
-        public PopupList( int visibleItemCount = 20 )
+        public PopupList( PopupListModel model, int visibleItemCount = 20 )
         {
+            Model = model;
             VisibleItemCount = visibleItemCount;
 
             InitializeComponent();
 
-            // Dummy items - pass model into constructor?
-            for ( int loop = 1; loop <= 30; loop++ )
-            {
-                listBox1.Items.Add( $"Item {loop}" );
-            }
-            listBox1.SelectedIndex = 0;
+            UpdateList();
 
             ThemeManager.Apply( this );
         }
@@ -89,6 +86,23 @@ namespace dmand
             var ownerRectangle = Owner.RectangleToScreen( Owner.ClientRectangle );
 
             Location = new Point( Owner.Location.X + ( ( Owner.Width - Width ) / 2 ), ownerRectangle.Top + 10 );
+        }
+
+        private void textBox1_TextChanged( object sender, EventArgs e )
+        {
+            UpdateList();
+        }
+
+        private void UpdateList()
+        {
+            listBox1.BeginUpdate();
+            listBox1.Items.Clear();
+            foreach ( var item in Model.GetFilteredList( textBox1.Text ) )
+            {
+                Console.WriteLine( "CCC" );
+                listBox1.Items.Add( item.Value );
+            }
+            listBox1.EndUpdate();
         }
     }
 }

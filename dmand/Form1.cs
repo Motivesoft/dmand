@@ -85,21 +85,19 @@ namespace dmand
                 //ForceDropDownState( true );
         }
 
-        private void Form1_KeyDown( object sender, KeyEventArgs e )
-        {
-            if ( e.KeyCode == Keys.P && e.Control )
-            {
-                var popup = new PopupList();
-                var dialogResult = popup.ShowDialog( this );
-                var x = popup.Text;
-            }
-        }
-
         private void toolStripContainer1_KeyDown( object sender, KeyEventArgs e )
         {
             if ( e.KeyCode == Keys.P && e.Control )
             {
-                var popup = new PopupList();
+                var model = new PopupListModel();
+
+                // Dummy items - pass model into constructor?
+                for ( int loop = 1; loop <= 99; loop++ )
+                {
+                    model.Items.Add( new PopupListItem( $"Item {loop}" ) );
+                }
+
+                var popup = new PopupList( model );
                 popup.Show(this);
                 var x = popup.Text;
             }
