@@ -35,18 +35,19 @@ namespace dmand
                 e.DrawBackground();
                 e.DrawFocusRectangle();
 
-                var value = Model.Items.ElementAt<PopupListItem>( e.Index ).Value;
-                var hint = Model.Items.ElementAt<PopupListItem>( e.Index ).Hint;
+                var item = (PopupListItem) listBox1.Items[ e.Index ];
+                var value = item.Value;
+                var hint = item.Hint;
 
                 var sizeValue = e.Graphics.MeasureString( value, e.Font );
                 var sizeHint = string.IsNullOrEmpty( hint ) ? new SizeF( 0, 0 ) : e.Graphics.MeasureString( hint, e.Font );
 
-                e.Graphics.DrawString( Model.Items.ElementAt<PopupListItem>( e.Index ).Value, e.Font, new SolidBrush( Color.Red ), e.Bounds );
+                e.Graphics.DrawString( value, e.Font, new SolidBrush( Color.Red ), e.Bounds );
 
                 if ( e.Bounds.Width > sizeValue.Width + sizeHint.Width )
                 {
                     var hintBounds = new Rectangle( (int) ( e.Bounds.X + e.Bounds.Width - sizeHint.Width ), e.Bounds.Y, (int) sizeHint.Width, e.Bounds.Height );
-                    e.Graphics.DrawString( Model.Items.ElementAt<PopupListItem>( e.Index ).Hint, e.Font, new SolidBrush( Color.Green ), e.Bounds );
+                    e.Graphics.DrawString( hint, e.Font, new SolidBrush( Color.Green ), e.Bounds );
                 }
             };
 
@@ -120,7 +121,7 @@ namespace dmand
             listBox1.Items.Clear();
             foreach ( var item in Model.GetFilteredList( textBox1.Text ) )
             {
-                listBox1.Items.Add( item.Value );
+                listBox1.Items.Add( item );
             }
             listBox1.SelectedItem = selection;
             listBox1.EndUpdate();
@@ -128,7 +129,8 @@ namespace dmand
 
         private void listBox1_Click( object sender, EventArgs e )
         {
-            textBox1.Text = listBox1.SelectedItem.ToString();
+            var item = (PopupListItem) listBox1.SelectedItem;
+            textBox1.Text = item.Value;
             CloseWithResult( DialogResult.OK );
         }
 
@@ -141,7 +143,10 @@ namespace dmand
 
         private void PopupList_Deactivate( object sender, EventArgs e )
         {
-            CloseWithResult( DialogResult.Cancel );
+            if ( !System.Diagnostics.Debugger.IsAttached )
+            {
+                CloseWithResult( DialogResult.Cancel );
+            }
         }
     }
 }
