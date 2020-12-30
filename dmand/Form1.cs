@@ -94,7 +94,7 @@ namespace dmand
                 // Dummy items - pass model into constructor?
                 for ( int loop = 1; loop <= 99; loop++ )
                 {
-                    model.Items.Add( new PopupListItem( $"Item {loop}" ) );
+                    model.Items.Add( new PopupListItem( $"Item {loop}", $"Hint {loop}" ) );
                 }
 
                 var popup = new PopupList( model );

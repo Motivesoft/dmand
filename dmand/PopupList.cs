@@ -37,18 +37,23 @@ namespace dmand
 
                 var item = (PopupListItem) listBox1.Items[ e.Index ];
                 var value = item.Value;
+
+
+                e.Graphics.DrawString( value, e.Font, new SolidBrush( e.ForeColor ), e.Bounds );
+
                 var hint = item.Hint;
-
-                var sizeValue = e.Graphics.MeasureString( value, e.Font );
-                var sizeHint = string.IsNullOrEmpty( hint ) ? new SizeF( 0, 0 ) : e.Graphics.MeasureString( hint, e.Font );
-
-                e.Graphics.DrawString( value, e.Font, new SolidBrush( Color.Red ), e.Bounds );
-
-                if ( e.Bounds.Width > sizeValue.Width + sizeHint.Width )
+                if ( !string.IsNullOrEmpty( hint ) )
                 {
-                    var hintBounds = new Rectangle( (int) ( e.Bounds.X + e.Bounds.Width - sizeHint.Width ), e.Bounds.Y, (int) sizeHint.Width, e.Bounds.Height );
-                    e.Graphics.DrawString( hint, e.Font, new SolidBrush( Color.Green ), e.Bounds );
+                    var widthValue = Math.Ceiling( e.Graphics.MeasureString( value, e.Font ).Width );
+                    var widthHint = Math.Ceiling( e.Graphics.MeasureString( hint, e.Font ).Width );
+                    if ( e.Bounds.Width > widthValue + widthHint )
+                    {
+                        var hintBounds = new Rectangle( (int) ( e.Bounds.X + e.Bounds.Width - widthHint ), e.Bounds.Y, (int) widthHint, e.Bounds.Height );
+                        e.Graphics.DrawString( hint, e.Font, new SolidBrush( e.ForeColor ), hintBounds );
+                    }
                 }
+
+
             };
 
             UpdateList();
