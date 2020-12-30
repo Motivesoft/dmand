@@ -13,21 +13,22 @@ namespace dmand
 {
     public partial class Form1 : Form
     {
+        private readonly LaunchProfile Profile;
+
         public Form1( string[] args )
         {
             InitializeComponent();
 
-            LaunchProfile profile;
             if ( args.Length == 0 )
             {
                 try
                 {
-                    profile = Utilities.LoadFrom<LaunchProfile>( "launch" );
+                    Profile = Utilities.LoadFrom<LaunchProfile>( "launch" );
                 }
                 catch ( Exception )
                 {
                     // TODO log that we failed to read the profile and so we're using the default
-                    profile = LaunchProfile.Default;
+                    Profile = LaunchProfile.Default;
                 }
             }
             else
@@ -35,7 +36,7 @@ namespace dmand
                 // TODO Implement this propery
                 try
                 {
-                    profile = LaunchProfile.LoadFrom( args[ 0 ] );
+                    Profile = LaunchProfile.LoadFrom( args[ 0 ] );
                 }
                 catch ( Exception ex )
                 {
@@ -49,14 +50,45 @@ namespace dmand
                 }
             }
 
-            ThemeManager.SetTheme( profile.Theme );
-            ThemeManager.Apply( this );
+            ThemeManager.SetTheme( Profile.Theme );
 
-            Utilities.SaveTo<LaunchProfile>( profile, "launch" );
+            Utilities.SaveTo<LaunchProfile>( Profile, "launch" );
         }
 
         private void Form1_Load( object sender, EventArgs e )
         {
+            var panelCollection = new List<Panel>();
+            foreach ( var panelProfile in Profile.Panels )
+            {
+                panelCollection.Add( CreatePanel( panelProfile ) );
+            }
+
+            if ( panelCollection.Count == 1 )
+            {
+                Panel container = new Panel();
+                container.Dock = DockStyle.Fill;
+                container.Controls.Add( panelCollection[ 0 ] );
+                panelCollection[ 0 ].Dock = DockStyle.Fill;
+                toolStripContainer1.ContentPanel.Controls.Add( container );
+            }
+            foreach ( var panel in panelCollection )
+            {
+                SplitContainer c = new SplitContainer();
+                
+            }
+        }
+
+        private Panel CreatePanel( PanelProfile panelProfile )
+        {
+            var panel = new PanelExtension( panelProfile );
+
+            var label = new Label();
+            label.BorderStyle = BorderStyle.FixedSingle;
+            label.Text = $"{panelProfile.Location} ({panelProfile.PanelId})";
+            label.Dock = DockStyle.Fill;
+            panel.Controls.Add( label );
+
+            return panel;
         }
 
         private void exitToolStripMenuItem_Click( object sender, EventArgs e )
@@ -105,6 +137,11 @@ namespace dmand
                 }
             }
 
+        }
+
+        private void Form1_Shown( object sender, EventArgs e )
+        {
+            ThemeManager.Apply( this );
         }
     }
 }

@@ -71,6 +71,7 @@ namespace dmand
             this.ShowInTaskbar = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Deactivate += new System.EventHandler(this.PopupList_Deactivate);
+            this.Load += new System.EventHandler(this.PopupList_Load);
             this.Shown += new System.EventHandler(this.PopupList_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();

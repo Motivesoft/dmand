@@ -28,8 +28,6 @@ namespace dmand
 
             InitializeComponent();
 
-            ThemeManager.Apply( this );
-
             listBox1.DrawMode = DrawMode.OwnerDrawFixed;
             listBox1.DrawItem += ( object sender, DrawItemEventArgs e ) => {
                 var foreColor = e.ForeColor;
@@ -78,8 +76,6 @@ namespace dmand
                         }
                     }
                 }
-
-                
             };
 
             UpdateList();
@@ -178,6 +174,11 @@ namespace dmand
             {
                 CloseWithResult( DialogResult.Cancel );
             }
+        }
+
+        private void PopupList_Load( object sender, EventArgs e )
+        {
+            ThemeManager.Apply( this );
         }
     }
 }
