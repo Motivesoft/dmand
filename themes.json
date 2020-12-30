@@ -6,26 +6,9 @@
       "TextBoxBase.ForeColor": "#757CA1",
       "TextBoxBase.BackColor": "#292D3E",
       "ListControl.ForeColor": "#757CA1",
-      "ListControl.BackColor": "#292D3E"
-    }
-  },
-  {
-    "Name": "VSDark",
-    "Colors": {
-      "Panel.BackColor": "#1E1E1E",
-      "TextBoxBase.ForeColor": "#F1F1F1",
-      "TextBoxBase.BackColor": "#333333",
-      "ListControl.ForeColor": "#F1F1F1",
-      "ListControl.BackColor": "#333333"
-    }
-  },
-  {
-    "Name": "Light",
-    "Colors": {
-      "TextBoxBase.ForeColor": "#000000",
-      "TextBoxBase.BackColor": "#ffffff",
-      "ListControl.ForeColor": "#000000",
-      "ListControl.BackColor": "#ffffff"
+      "ListControl.BackColor": "#292D3E",
+      "Control.SelectionForeColor": "#B7C5C5",
+      "Control.SelectionBackColor": "#3A3D51"
     }
   }
 ]

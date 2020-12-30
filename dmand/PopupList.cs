@@ -32,28 +32,54 @@ namespace dmand
 
             listBox1.DrawMode = DrawMode.OwnerDrawFixed;
             listBox1.DrawItem += ( object sender, DrawItemEventArgs e ) => {
-                e.DrawBackground();
-                e.DrawFocusRectangle();
+                var foreColor = e.ForeColor;
 
-                var item = (PopupListItem) listBox1.Items[ e.Index ];
-                var value = item.Value;
-
-
-                e.Graphics.DrawString( value, e.Font, new SolidBrush( e.ForeColor ), e.Bounds );
-
-                var hint = item.Hint;
-                if ( !string.IsNullOrEmpty( hint ) )
+                var selectionForeColor = ThemeManager.CurrentTheme.Colors[ "Control.SelectionForeColor" ];
+                if ( selectionForeColor != null && ( ( e.State & DrawItemState.Selected ) == DrawItemState.Selected ) )
                 {
-                    var widthValue = Math.Ceiling( e.Graphics.MeasureString( value, e.Font ).Width );
-                    var widthHint = Math.Ceiling( e.Graphics.MeasureString( hint, e.Font ).Width );
-                    if ( e.Bounds.Width > widthValue + widthHint )
+                    // Use a custom selection colour
+                    foreColor = selectionForeColor;
+                }
+
+                var selectionBackColor = ThemeManager.CurrentTheme.Colors[ "Control.SelectionBackColor" ];
+                if ( selectionBackColor != null && ( ( e.State & DrawItemState.Selected ) == DrawItemState.Selected ) )
+                {
+                    // Use a custom selection colour
+                    using ( var brush = new SolidBrush( selectionBackColor ) )
                     {
-                        var hintBounds = new Rectangle( (int) ( e.Bounds.X + e.Bounds.Width - widthHint ), e.Bounds.Y, (int) widthHint, e.Bounds.Height );
-                        e.Graphics.DrawString( hint, e.Font, new SolidBrush( e.ForeColor ), hintBounds );
+                        e.Graphics.FillRectangle( brush, e.Bounds );
+                    }
+                }
+                else
+                {
+                    e.DrawBackground();
+                }
+
+                // I don't think we want to do this - it has no value in this list control as we
+                // dispose as soon as an item is clicked on (and by that, receives focus)
+                //e.DrawFocusRectangle();
+                
+                using ( var brush = new SolidBrush( foreColor ) )
+                {
+                    var item = (PopupListItem) listBox1.Items[ e.Index ];
+
+                    var value = item.Value;
+                    e.Graphics.DrawString( value, e.Font, brush, e.Bounds );
+
+                    var hint = item.Hint;
+                    if ( !string.IsNullOrEmpty( hint ) )
+                    {
+                        var widthValue = Math.Ceiling( e.Graphics.MeasureString( value, e.Font ).Width );
+                        var widthHint = Math.Ceiling( e.Graphics.MeasureString( hint, e.Font ).Width );
+                        if ( e.Bounds.Width > widthValue + widthHint )
+                        {
+                            var hintBounds = new Rectangle( (int) ( e.Bounds.X + e.Bounds.Width - widthHint ), e.Bounds.Y, (int) widthHint, e.Bounds.Height );
+                            e.Graphics.DrawString( hint, e.Font, brush, hintBounds );
+                        }
                     }
                 }
 
-
+                
             };
 
             UpdateList();
