@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace dmand
 {
-    public class PanelExtension : Panel
+    public class TableLayoutPanelExtension : TableLayoutPanel
     {
         public PanelProfile PanelProfile
         {
@@ -16,7 +16,7 @@ namespace dmand
             private set;
         }
 
-        public PanelExtension( PanelProfile panelProfile )
+        public TableLayoutPanelExtension( PanelProfile panelProfile )
         {
             PanelProfile = panelProfile;
         }

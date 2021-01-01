@@ -30,33 +30,46 @@ namespace dmand
 
             listBox1.DrawMode = DrawMode.OwnerDrawFixed;
             listBox1.DrawItem += ( object sender, DrawItemEventArgs e ) => {
+                // e.ForeColor and e.BackColor will be set based on selection status
+                // We can amend them if we do a bit of the drawing ourselves and have
+                // chosen alternative colors
+
                 var foreColor = e.ForeColor;
 
-                var selectionForeColor = ThemeManager.CurrentTheme.Colors[ "Control.SelectionForeColor" ];
-                if ( selectionForeColor != null && ( ( e.State & DrawItemState.Selected ) == DrawItemState.Selected ) )
+                if ( ( e.State & DrawItemState.Selected ) == DrawItemState.Selected )
                 {
                     // Use a custom selection colour
-                    foreColor = selectionForeColor;
-                }
-
-                var selectionBackColor = ThemeManager.CurrentTheme.Colors[ "Control.SelectionBackColor" ];
-                if ( selectionBackColor != null && ( ( e.State & DrawItemState.Selected ) == DrawItemState.Selected ) )
-                {
-                    // Use a custom selection colour
-                    using ( var brush = new SolidBrush( selectionBackColor ) )
+                    Color selectionForeColor;
+                    if ( ThemeManager.TryAndGet( listBox1, "SelectionForeColor", out selectionForeColor ) )
                     {
-                        e.Graphics.FillRectangle( brush, e.Bounds );
+                        foreColor = selectionForeColor;
+                    }
+
+                    Color selectionBackColor;
+                    if ( ThemeManager.TryAndGet( listBox1, "SelectionBackColor", out selectionBackColor ) )
+                    {
+                        // Use a custom selection colour
+                        using ( var brush = new SolidBrush( selectionBackColor ) )
+                        {
+                            e.Graphics.FillRectangle( brush, e.Bounds );
+                        }
+                    }
+                    else
+                    {
+                        // Let the system deal with highlighting
+                        e.DrawBackground();
                     }
                 }
                 else
                 {
+                    // Let the system deal with highlighting
                     e.DrawBackground();
                 }
 
                 // I don't think we want to do this - it has no value in this list control as we
                 // dispose as soon as an item is clicked on (and by that, receives focus)
                 //e.DrawFocusRectangle();
-                
+
                 using ( var brush = new SolidBrush( foreColor ) )
                 {
                     var item = (PopupListItem) listBox1.Items[ e.Index ];

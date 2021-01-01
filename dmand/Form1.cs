@@ -61,7 +61,7 @@ namespace dmand
 
         private Panel CreatePanel( PanelProfile panelProfile )
         {
-            var panel = new TableLayoutPanel();
+            var panel = new TableLayoutPanelExtension( panelProfile );
 
             panel.Dock = DockStyle.Fill;
             panel.RowCount = 2;
@@ -78,44 +78,6 @@ namespace dmand
             listView.Dock = DockStyle.Fill;
             listView.View = (View) Enum.Parse( typeof( View ), panelProfile.View );
             panel.Controls.Add( listView );
-
-            return panel;
-        }
-        private Panel CreatePanelx( PanelProfile panelProfile )
-        {
-            var tf = new ToolStripTextBox();
-            tf.Dock = DockStyle.Fill;
-
-            var ts = new ToolStrip();
-            ts.Items.Add( tf );
-            ts.Dock = DockStyle.Fill;
-            ts.GripStyle = ToolStripGripStyle.Hidden;
-
-            var ls = new ListView();
-            ls.Dock = DockStyle.Fill;
-            ls.BorderStyle = BorderStyle.None;
-
-            var c = new ToolStripContainer();
-            c.TopToolStripPanel.Controls.Add( ts );
-            c.ContentPanel.Controls.Add( ls );
-            c.Dock = DockStyle.Fill;
-            //c.Width = ls.Width;
-
-            var panel = new PanelExtension( panelProfile );
-            panel.Controls.Add( c );
-            panel.Dock = DockStyle.Fill;
-
-            Console.WriteLine( $"{tf.Width}, {ts.Width}, {ls.Width}, {c.Width}, {panel.Width}, " );
-
-            ls.SizeChanged += ( object sender, EventArgs e ) =>
-            {
-                Console.WriteLine( $"< {tf.Width}, {ts.Width}, {ls.Width}, {c.Width}, {panel.Width}, " );
-
-                ts.Width = ls.Width;
-                tf.Width = ls.Width;
-
-                Console.WriteLine( $"> {tf.Width}, {ts.Width}, {ls.Width}, {c.Width}, {panel.Width}, " );
-            };
 
             return panel;
         }
