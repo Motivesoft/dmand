@@ -57,36 +57,65 @@ namespace dmand
 
         private void Form1_Load( object sender, EventArgs e )
         {
-            var panelCollection = new List<Panel>();
-            foreach ( var panelProfile in Profile.Panels )
-            {
-                panelCollection.Add( CreatePanel( panelProfile ) );
-            }
-
-            if ( panelCollection.Count == 1 )
-            {
-                Panel container = new Panel();
-                container.Dock = DockStyle.Fill;
-                container.Controls.Add( panelCollection[ 0 ] );
-                panelCollection[ 0 ].Dock = DockStyle.Fill;
-                toolStripContainer1.ContentPanel.Controls.Add( container );
-            }
-            foreach ( var panel in panelCollection )
-            {
-                SplitContainer c = new SplitContainer();
-                
-            }
         }
 
         private Panel CreatePanel( PanelProfile panelProfile )
         {
-            var panel = new PanelExtension( panelProfile );
+            var panel = new TableLayoutPanel();
 
-            var label = new Label();
-            label.BorderStyle = BorderStyle.FixedSingle;
-            label.Text = $"{panelProfile.Location} ({panelProfile.PanelId})";
-            label.Dock = DockStyle.Fill;
-            panel.Controls.Add( label );
+            panel.Dock = DockStyle.Fill;
+            panel.RowCount = 2;
+            panel.ColumnCount = 1;
+
+            var textBox = new TextBox();
+            textBox.Dock = DockStyle.Top | DockStyle.Right;
+            textBox.BorderStyle = BorderStyle.FixedSingle;
+            textBox.Text = panelProfile.Location;
+            panel.Controls.Add( textBox );
+
+            var listView = new ListView();
+            listView.BorderStyle = BorderStyle.FixedSingle;
+            listView.Dock = DockStyle.Fill;
+            listView.View = (View) Enum.Parse( typeof( View ), panelProfile.View );
+            panel.Controls.Add( listView );
+
+            return panel;
+        }
+        private Panel CreatePanelx( PanelProfile panelProfile )
+        {
+            var tf = new ToolStripTextBox();
+            tf.Dock = DockStyle.Fill;
+
+            var ts = new ToolStrip();
+            ts.Items.Add( tf );
+            ts.Dock = DockStyle.Fill;
+            ts.GripStyle = ToolStripGripStyle.Hidden;
+
+            var ls = new ListView();
+            ls.Dock = DockStyle.Fill;
+            ls.BorderStyle = BorderStyle.None;
+
+            var c = new ToolStripContainer();
+            c.TopToolStripPanel.Controls.Add( ts );
+            c.ContentPanel.Controls.Add( ls );
+            c.Dock = DockStyle.Fill;
+            //c.Width = ls.Width;
+
+            var panel = new PanelExtension( panelProfile );
+            panel.Controls.Add( c );
+            panel.Dock = DockStyle.Fill;
+
+            Console.WriteLine( $"{tf.Width}, {ts.Width}, {ls.Width}, {c.Width}, {panel.Width}, " );
+
+            ls.SizeChanged += ( object sender, EventArgs e ) =>
+            {
+                Console.WriteLine( $"< {tf.Width}, {ts.Width}, {ls.Width}, {c.Width}, {panel.Width}, " );
+
+                ts.Width = ls.Width;
+                tf.Width = ls.Width;
+
+                Console.WriteLine( $"> {tf.Width}, {ts.Width}, {ls.Width}, {c.Width}, {panel.Width}, " );
+            };
 
             return panel;
         }
@@ -141,6 +170,26 @@ namespace dmand
 
         private void Form1_Shown( object sender, EventArgs e )
         {
+            var panelCollection = new List<Panel>();
+            foreach ( var panelProfile in Profile.Panels )
+            {
+                panelCollection.Add( CreatePanel( panelProfile ) );
+            }
+
+            if ( panelCollection.Count == 1 )
+            {
+                Panel container = new Panel();
+                container.Dock = DockStyle.Fill;
+                container.Controls.Add( panelCollection[ 0 ] );
+                panelCollection[ 0 ].Dock = DockStyle.Fill;
+                toolStripContainer1.ContentPanel.Controls.Add( container );
+            }
+            foreach ( var panel in panelCollection )
+            {
+                SplitContainer c = new SplitContainer();
+
+            }
+
             ThemeManager.Apply( this );
         }
     }

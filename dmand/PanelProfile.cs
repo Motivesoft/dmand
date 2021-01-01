@@ -16,7 +16,8 @@ namespace dmand
         public static readonly PanelProfile Default = new PanelProfile
         {
             Location = Environment.GetFolderPath( Environment.SpecialFolder.MyDocuments ),
-            PanelId = Utilities.CreateUniqueId()
+            PanelId = Utilities.CreateUniqueId(),
+            View = System.Windows.Forms.View.Details.ToString()
         };
 
         public string PanelId
@@ -26,6 +27,12 @@ namespace dmand
         }
 
         public string Location
+        {
+            get;
+            set;
+        }
+
+        public string View
         {
             get;
             set;
