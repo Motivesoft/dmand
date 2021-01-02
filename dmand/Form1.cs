@@ -63,22 +63,6 @@ namespace dmand
         {
             var panel = new TableLayoutPanelExtension( panelProfile );
 
-            panel.Dock = DockStyle.Fill;
-            panel.RowCount = 2;
-            panel.ColumnCount = 1;
-
-            var textBox = new TextBox();
-            textBox.Dock = DockStyle.Top | DockStyle.Right;
-            textBox.BorderStyle = BorderStyle.FixedSingle;
-            textBox.Text = panelProfile.Location;
-            panel.Controls.Add( textBox );
-
-            var listView = new ListView();
-            listView.BorderStyle = BorderStyle.FixedSingle;
-            listView.Dock = DockStyle.Fill;
-            listView.View = (View) Enum.Parse( typeof( View ), panelProfile.View );
-            panel.Controls.Add( listView );
-
             return panel;
         }
 
