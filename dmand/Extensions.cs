@@ -57,7 +57,6 @@ namespace dmand
                 }
             };
 
-            ColumnHeader iconHeader = new ColumnHeader { Width = 20, Text = "Icon" };
             ColumnHeader nameHeader = new ColumnHeader { Width = 200, Text = "Name" };
             ColumnHeader sizeHeader = new ColumnHeader { Width = 50, Text = "Size" };
             ColumnHeader dateHeader = new ColumnHeader { Width = 50, Text = "Date" };
@@ -65,15 +64,15 @@ namespace dmand
             listView.View = (View) Enum.Parse( typeof( View ), panelProfile.View );
             listView.Columns.AddRange( new ColumnHeader[]
             {
-                new ColumnHeader(),
-                iconHeader,
                 nameHeader,
                 sizeHeader,
                 dateHeader,
             } );
+            listView.SmallImageList = new ImageList();
+            //listView.SmallImageList.ImageSize = new Size( 50, 50 );
 
-            PerformLayout();
             ResumeLayout();
+            PerformLayout();
 
             DeferSwitchLocation( panelProfile.Location );
         }
@@ -147,12 +146,21 @@ namespace dmand
             listView.BeginUpdate();
             foreach ( var item in items )
             {
-                var lvi = new ListViewItem( item, 0 );
-                lvi.Name = item;
-                lvi.SubItems.Add( item );
-                lvi.SubItems.Add( item );
-                lvi.SubItems.Add( item );
-//                listView.Items.Add( lvi );
+                // Build a cache of icons
+                // TODO make this static to share across all views
+                if ( !listView.SmallImageList.Images.ContainsKey( item ) )
+                {
+                    listView.SmallImageList.Images.Add( item, Icons.GetSmallIcon( item ) );
+                }
+
+                var lvi = new ListViewItem( item );
+                
+                //lvi.Name = item;
+                lvi.ImageKey = item;
+                lvi.SubItems.Add( "si1" );
+                lvi.SubItems.Add( "si2" );
+                lvi.SubItems.Add( "si3" );
+                listView.Items.Add( lvi );
             }
             listView.EndUpdate();
             Refresh();

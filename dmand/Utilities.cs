@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -16,6 +18,7 @@ namespace dmand
 
         private static readonly SortedSet<string> GeneratedIds = new SortedSet<string>();
         private static readonly Random random = new Random( (int) DateTimeOffset.Now.ToUnixTimeSeconds() );
+        private static readonly ImageList imageList = new ImageList();
 
         /// <summary>
         /// Create a hexadecimal identifier that is unique within this execution
