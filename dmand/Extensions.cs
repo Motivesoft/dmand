@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace dmand
 {
-    public class TableLayoutPanelExtension : TableLayoutPanel
+    public class TableLayoutPanelExtension : Panel
     {
         public PanelProfile PanelProfile
         {
@@ -17,28 +17,36 @@ namespace dmand
             private set;
         }
 
-        private readonly TextBox textBox = new TextBox
-        {
-            Dock = DockStyle.Top | DockStyle.Right,
-            BorderStyle = BorderStyle.FixedSingle,
-        };
-        private readonly ListView listView = new ListView
-        {
-            Dock = DockStyle.Fill,
-            BorderStyle = BorderStyle.FixedSingle,
-            LabelEdit = false,
-            AllowColumnReorder = true,
-            FullRowSelect = true,
-            GridLines = true,
-        };
+        private readonly TextBox textBox;
+        private readonly ListView listView;
 
         public TableLayoutPanelExtension( PanelProfile panelProfile )
         {
             PanelProfile = panelProfile;
 
+            SuspendLayout();
+
+            textBox = new TextBox
+            {
+                Anchor = AnchorStyles.Top | AnchorStyles.Left,
+                Dock = DockStyle.Top,
+                BorderStyle = BorderStyle.FixedSingle,
+            };
+            listView = new ListView
+            {
+                Anchor = AnchorStyles.Top | AnchorStyles.Left,
+                Dock = DockStyle.Fill,
+                BorderStyle = BorderStyle.FixedSingle,
+                HeaderStyle = ColumnHeaderStyle.Clickable,
+                LabelEdit = false,
+                AllowColumnReorder = true,
+                FullRowSelect = true,
+                GridLines = true,
+            };
+
             Dock = DockStyle.Fill;
-            RowCount = 2;
-            ColumnCount = 1;
+            Controls.Add( listView );
+            Controls.Add( textBox );
 
             textBox.Text = panelProfile.Location;
             textBox.KeyDown += ( object sender, KeyEventArgs e ) =>
@@ -48,11 +56,24 @@ namespace dmand
                     DeferSwitchLocation( textBox.Text );
                 }
             };
-            Controls.Add( textBox );
 
-            var listView = new ListView();
+            ColumnHeader iconHeader = new ColumnHeader { Width = 20, Text = "Icon" };
+            ColumnHeader nameHeader = new ColumnHeader { Width = 200, Text = "Name" };
+            ColumnHeader sizeHeader = new ColumnHeader { Width = 50, Text = "Size" };
+            ColumnHeader dateHeader = new ColumnHeader { Width = 50, Text = "Date" };
+
             listView.View = (View) Enum.Parse( typeof( View ), panelProfile.View );
-            Controls.Add( listView );
+            listView.Columns.AddRange( new ColumnHeader[]
+            {
+                new ColumnHeader(),
+                iconHeader,
+                nameHeader,
+                sizeHeader,
+                dateHeader,
+            } );
+
+            PerformLayout();
+            ResumeLayout();
 
             DeferSwitchLocation( panelProfile.Location );
         }
@@ -109,7 +130,7 @@ namespace dmand
                 return;
             }
 
-            listView.Clear();
+            listView.Items.Clear();
         }
 
         private void UpdateListView( List<string> items )
@@ -123,11 +144,6 @@ namespace dmand
                 return;
             }
 
-            listView.Columns.Add( "Item Column", -2, HorizontalAlignment.Left );
-            listView.Columns.Add( "Column 2", -2, HorizontalAlignment.Left );
-            listView.Columns.Add( "Column 3", -2, HorizontalAlignment.Left );
-            listView.Columns.Add( "Column 4", -2, HorizontalAlignment.Center );
-
             listView.BeginUpdate();
             foreach ( var item in items )
             {
@@ -136,7 +152,7 @@ namespace dmand
                 lvi.SubItems.Add( item );
                 lvi.SubItems.Add( item );
                 lvi.SubItems.Add( item );
-                listView.Items.Add( lvi );
+//                listView.Items.Add( lvi );
             }
             listView.EndUpdate();
             Refresh();

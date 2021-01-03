@@ -136,7 +136,7 @@ namespace dmand
 
             }
 
-            ThemeManager.Apply( this );
+            //ThemeManager.Apply( this );
         }
     }
 }
